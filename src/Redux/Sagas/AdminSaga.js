@@ -6,7 +6,6 @@ import * as types from '../ActionTypes/AdminActionTypes';
         fork,
         takeEvery,
         takeLatest,
-        delay
     } from 'redux-saga/effects';
 import Swal from 'sweetalert2';
 import {
@@ -15,7 +14,6 @@ import {
     adminLoginApi,
     adminResetPasswordApi,
     createAdminApi,
-    deleteAdminApi,
     getSingleAdminApi,
     loadAdminApi,
     updateAdminApi
@@ -34,8 +32,6 @@ import {
     adminResetPasswordSuccess,
     createAdminError,
     createAdminSuccess,
-    deleteAdminError,
-    deleteAdminSuccess,
     getSingleAdminError,
     getSingleAdminSuccess,
     loadAdminError,
@@ -96,6 +92,10 @@ export function* onAdminChangePasswordStartAsync({ payload }) {
         }
     } catch (error) {
         yield put(adminChangePasswordError(error.response))
+        Toast.fire({
+            icon: "error",
+            title: error.response.data.message,
+        });
     }
 }
 
@@ -264,7 +264,6 @@ export function* onUpdateAdminStartAsync({ payload }) {
     try {
         const response = yield call(updateAdminApi, payload)
         if (response.data.status === 200) {
-            console.log('RESPONSE~~~~~~~~~~~~~>>>', response.data)
             yield put(updateAdminSuccess(response.data))
             Toast.fire({
                 icon: "success",
@@ -307,26 +306,6 @@ export function* onUpdateAdminStartAsync({ payload }) {
     }
 }
 
-// export function* onDeleteAdminStartAsync({ payload }) {
-//     try {
-//         const response = yield call(deleteAdminApi, payload)
-//         if (response.data.message === "Success") {
-//             yield delay(500)    
-//             yield put(deleteAdminSuccess(response.data))
-//             Toast.fire({
-//                 icon: "success",
-//                 title: response.data.message,
-//             });
-//         } else {
-//             Toast.fire({
-//                 icon: "error",
-//                 title: response.data.message,
-//             });
-//         }
-//     } catch (error) {
-//         yield put(deleteAdminError(error.response))
-//     }
-// }
 
 export function* onAdminLogin() {
     yield takeLatest(types.ADMIN_LOGIN_START, onAdminLoginStartAsync)
@@ -360,9 +339,6 @@ export function* onGetSingleAdmin() {
     yield takeEvery(types.GET_SINGLE_ADMIN_START, onGetSingleAdminStartAsync)
 }
 
-// export function* onDeleteAdmin() {
-//     yield takeLatest(types.DELETE_ADMIN_START, onDeleteAdminStartAsync)
-// }
 
 export function* onUpdateAdmin() {
     yield takeEvery(types.UPDATE_ADMIN_START, onUpdateAdminStartAsync)
@@ -377,7 +353,6 @@ const adminSagas = [
     fork(onLoadAdmin),
     fork(onCreateAdmin),
     fork(onGetSingleAdmin),
-    // fork(onDeleteAdmin),
     fork(onUpdateAdmin)
 ]
 

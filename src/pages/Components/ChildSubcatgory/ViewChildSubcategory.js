@@ -16,22 +16,22 @@ const ViewChildSubcategory = () => {
   }, [])
 
   return (
-      <div class="main-content">
-        <section class="section">
-          <div class="section-header">
+      <div className="main-content">
+        <section className="section">
+          <div className="section-header">
             <h1>Child Subcategories</h1>
           </div>
-          <div class="section-body">
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-8">
-                <div class="card">
-                  <div class="card-header">
+          <div className="section-body">
+            <div className="row">
+              <div className="col-12 col-md-6 col-lg-8">
+                <div className="card">
+                  <div className="card-header">
                     <h4>Single Child Subcategory</h4>
-                    <Link style={{ marginLeft: '70%' }} to={'/childSubcategory'} className="btn btn-primary">Back</Link>
+                    <Link style={{ marginLeft: '70%' }} to={'/childSubcategory'} classNameName="btn btn-primary">Back</Link>
                   </div>
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table table-bordered table-md">
+                  <div className="card-body">
+                    <div className="table-responsive">
+                      <table className="table table-bordered table-md">
                         <tr>
                           <td><div><label htmlFor="id" style={{ fontWeight: 'bold' }}>Child Subcategory Id : </label></div></td>
                           <td><div><label>{singleData[0]?.id}</label></div></td>
@@ -58,7 +58,7 @@ const ViewChildSubcategory = () => {
 
                         <tr>
                           <td><div><label htmlFor="status" style={{ fontWeight: 'bold' }}>Status : </label></div></td>
-                          <td><div ><label>{ singleData[0]?.status === 0 ? (<div class="badge badge-danger">Inactive</div>) : (<div class="badge badge-success">Active</div>)}</label></div></td>
+                          <td><div ><label>{ singleData[0]?.status === 0 ? (<div className="badge badge-danger">Inactive</div>) : (<div className="badge badge-success">Active</div>)}</label></div></td>
                         </tr>
                       </table>
                     </div>

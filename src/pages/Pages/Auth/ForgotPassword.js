@@ -4,41 +4,38 @@ import { useHistory } from "react-router";
 import { adminForgotPasswordStart } from "../../../Redux/Actions/AdminActions";
 
 const ForgotPassword = () => {
-    const [emailError, setEmailError] = useState(null);
-    const history = useHistory()
     const dispatch = useDispatch();
+    const history = useHistory()
+    const [submit , setSubmit] = useState();
     const [data, setData] = useState({
-      email: "",
-   });
+      email:'',
+    })
+
   const validateEmail = (email) => {
     const re =/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
+
   const handleChange = (e) => {
     const value = e.target.value;
     setData({
       ...data,
-      [e.target.name]: value,
-    });
-  };
+      [e.target.name] : value,
+    })
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (data.email === "") {
-      setEmailError("Email is Required!");
-    } else if (!validateEmail(data.email)) {
-      setEmailError("Invalid Email! Please enter Valid Email...");
-    } else {
-      setEmailError("");
-    }
-
-    const userData = {
-      email: data.email,
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setSubmit(true);
+        setData(data)
+        if(data.email !== '') {
+          var forgotPassData = {
+            email: data.email,
+          }
+          dispatch(adminForgotPasswordStart(forgotPassData))
+        }  
     };
-    
-    dispatch(adminForgotPasswordStart(userData));
-    history.push('/dashboard')
-  };
+
     return(
         <div id="app">
         <section class="section">
@@ -73,7 +70,9 @@ const ForgotPassword = () => {
                           autofocus
                         />
                       </div>
-                      <label style={{color: "red", marginLeft:'2%', display:'flex'}}>{emailError}</label>
+                      <label style={{color: "red", marginLeft:'2%', display:'flex'}}>
+                      {submit && !data.email && <small className="p-invalid">Email required.</small> || submit && !validateEmail(data.email) && <small className="p-invalid">Please Enter Valid Email!</small>}
+                      </label>
                       <div class="form-group">
                         <button
                           type="submit"

@@ -5,43 +5,31 @@ import { adminResetPasswordStart } from "../../../Redux/Actions/AdminActions";
 const ResetPassword = () => {
     const dispatch = useDispatch();
     const history = useState();
-    const [newPasswordError , setNewPasswordError] = useState(null);
-    const [confirmPasswordError , setConfirmPasswordError] = useState(null);
-    const [data , setData] = useState({
-        newPassword: '',
-        confirmPassword:''
-      });
+    const [submit , setSubmit] = useState();
+    const [data, setData] = useState({
+      newPassword:'',
+      confirmPassword: ''
+    })
 
-      const handleChange = (e) => {
-        const value = e.target.value;
-        setData({
-          ...data,
-          [e.target.name]: value,
-        });
-      };
-
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        if(data.newPassword === '') {
-          setNewPasswordError("Please Enter New Password!");
-      } else {
-         setNewPasswordError("");
-      }
-      if (data.confirmPassword === "") {
-        setConfirmPasswordError("Confirm Password can not be empty!");
-      } else if (data.newPassword !== data.confirmPassword) {
-        setConfirmPasswordError("New Password and Confirm Password must be match!");
-      } else {
-        setConfirmPasswordError("");
-      }
-        const ResetPassword = {
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setData({
+        ...data,
+        [e.target.name] : value,
+      })
+    }
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      setSubmit(true);
+      setData(data)
+      if(data.newPassword !== '' && data.confirmPassword !== '') {
+        var resetPassData = {
           newPassword: data.newPassword,
-          confirmPassword: data.confirmPassword,  
-        };
-        dispatch(adminResetPasswordStart(ResetPassword));
-        history.push('/dashboard')
+          confirmPassword: data.confirmPassword
         }
+        dispatch(adminResetPasswordStart(resetPassData))
+      }  
+  };
 
     return(
         <div id="app">
@@ -86,7 +74,9 @@ const ResetPassword = () => {
                           <div class="label"></div>
                         </div>
                       </div>
-                      <label style={{color: "red", marginLeft:'2%', display:'flex'}}>{newPasswordError}</label>
+                      <label style={{color: "red", marginLeft:'2%', display:'flex'}}>
+                      {submit && !data.newPassword && <small className="p-invalid">New password required.</small>}
+                      </label>
                       <div class="form-group">
                         <label for="password-confirm">Confirm Password</label>
                         <input
@@ -99,7 +89,9 @@ const ResetPassword = () => {
                           onChange={handleChange}
                         />
                       </div>
-                      <label style={{color: "red", marginLeft:'2%', display:'flex'}}>{confirmPasswordError}</label>
+                      <label style={{color: "red", marginLeft:'2%', display:'flex'}}>
+                      {submit && !data.confirmPassword && <small className="p-invalid">Confirm password required.</small>}
+                      </label>
 
                       <div class="form-group">
                         <button

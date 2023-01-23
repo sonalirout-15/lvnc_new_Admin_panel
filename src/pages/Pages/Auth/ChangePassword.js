@@ -6,40 +6,33 @@ import { adminChangePasswordStart } from "../../../Redux/Actions/AdminActions";
 const ChangePassword = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [currentPasswordError , setCurrentPasswordError] = useState(null)
-    const [newPasswordError , setNewPasswordError] = useState(null)
-    const [data , setData] = useState({
-      currentPassword: '',
+    const [submit , setSubmit] = useState();
+    const [data, setData] = useState({
+      currentPassword:'',
       newPassword:''
     })
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setData({
-          ...data,
-          [e.target.name]: value,
-        });
-      };
 
-      const handleSubmit = async (e) => {
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setData({
+        ...data,
+        [e.target.name] : value,
+      })
+    }
+
+      const handleSubmit = (e) => {
         e.preventDefault();
-        if(data.currentPassword === ''){
-          setCurrentPasswordError("Enter Your Current Password")
-        }else{
-          setCurrentPasswordError("")
-        }
-        
-        if(data.newPassword === ''){
-          setNewPasswordError('Enter Your New Password')
-        }else{
-          setNewPasswordError('')
-        }
-        const adminChangePassword = {
-          currentPassword : data.currentPassword,
-          newPassword : data.newPassword
-        }
-            dispatch(adminChangePasswordStart(adminChangePassword))
-            history.push('/dashboard')
-        }
+        setSubmit(true);
+        setData(data)
+        if(data.currentPassword !== '' && data.newPassword !== '') {
+          var changePassData = {
+            currentPassword: data.currentPassword,
+            newPassword: data.newPassword
+          }
+          dispatch(adminChangePasswordStart(changePassData))
+        }  
+    };
+    
     return(
         <div className="main-content">
         <section className="section" onSubmit={handleSubmit}>
@@ -61,7 +54,7 @@ const ChangePassword = () => {
                         type="password" 
                         className="form-control" 
                         id="currentPassword"
-                        value={data.currentPassword || ""}
+                        value={data.currentPassword}
                         name="currentPassword"
                         onChange={handleChange} 
                         />
@@ -71,7 +64,7 @@ const ChangePassword = () => {
                     marginLeft: "2%",
                     display: "flex"
                 }}>
-                  {currentPasswordError}
+                  {submit && !data.currentPassword && <small className="p-invalid">Current password required.</small>}
                 </label>
                     <div className="form-group">
                       <label>New Password</label>
@@ -79,7 +72,7 @@ const ChangePassword = () => {
                         type="password" 
                         className="form-control"
                         id="newPassword"
-                        value={data.newPassword || ""}
+                        value={data.newPassword}
                         name="newPassword"
                         onChange={handleChange} />
                     </div>
@@ -88,7 +81,7 @@ const ChangePassword = () => {
                     marginLeft: "2%",
                     display: "flex"
                 }}>
-                  {newPasswordError}
+                  {submit && !data.newPassword && <small className="p-invalid">New password required.</small>}
                 </label>
                     <button type="submit" className="btn btn-primary">Submit</button>{" "}
                     <Link to={'/dashboard'} className="btn btn-info">
