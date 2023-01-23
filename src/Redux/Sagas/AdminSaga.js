@@ -52,7 +52,6 @@ export function* onAdminLoginStartAsync({ payload }) {
     const response = yield call(adminLoginApi, payload) 
     if (response.data.status === 200) {
         localStorage.setItem("ADMIN", JSON.stringify(response.data.data.token));
-        localStorage.setItem('ADMINEMAIL',  response.data.userEmail)
         yield put(adminLoginSuccess(response.data));
         Toast.fire({
             icon: "success",
@@ -166,6 +165,7 @@ export function* onAdminLogoutStartAsync() {
         }
     } catch (error) {
         yield put(adminLogoutError(error.response))
+        
     }
 }
 

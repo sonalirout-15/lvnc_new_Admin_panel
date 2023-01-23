@@ -60,7 +60,7 @@ const Post = () => {
       return (
         <>
         {
-            row.status === 0 ? (<div class="badge badge-danger">Inactive</div>) : (<div class="badge badge-success">Active</div>)
+            row.status === 0 ? (<div className="badge badge-danger">Inactive</div>) : (<div className="badge badge-success">Active</div>)
         }
         </>
       )

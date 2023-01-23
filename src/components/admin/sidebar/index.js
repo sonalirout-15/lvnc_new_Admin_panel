@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Data } from "./data";
-// import "../../../js/js/scripts";
-// import "../../../js/js/stisla";
 
 export class SideBar extends Component {
   componentDidMount() {}

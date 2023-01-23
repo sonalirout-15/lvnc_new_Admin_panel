@@ -1,5 +1,4 @@
 import React from "react";
-import {  userDetail } from "./Data";
 import UserDropdown from "./UserDropdown";
 
 const Header = () => {
